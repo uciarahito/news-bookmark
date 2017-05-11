@@ -7,7 +7,6 @@
     <script src="https://unpkg.com/vue"></script>
     <script src="https://cdn.auth0.com/js/lock/10.15/lock.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="script/fblogin.js"></script>
   </head>
   <body>
     <div id="login">
@@ -29,9 +28,87 @@
   <div class="container">
     <div class="col-md-4">
       <h3>Sign in with Facebook account</h3>
-      <fb:login-button scope="email, public_profile" onlogin="checkLoginState();"></fb:login-button>
+      <button class="btn btn-primary"><fb:login-button scope="email, public_profile" onlogin="checkLoginState();"></fb:login-button></button>
     </div>
   </div>
 
   </body>
+  <script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '1188694054574729',
+      xfbml      : true,
+      version    : 'v2.9'
+    });
+    FB.AppEvents.logPageView();
+
+    FB.getLoginStatus(function(response) {
+      // console.log(response);
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+
+   function checkLoginState() {
+      FB.getLoginStatus(function(response) {
+        statusChangeCallback(response);
+      });
+    }
+
+    function statusChangeCallback(response) {
+      // console.log('statusChangeCallback');
+      // console.log(response);
+      if (response.status === 'connected') {
+        FB.api('/me', {fields: 'first_name, name, email'}, function (apiResponse) {
+          // console.log('id-----',apiResponse.id);
+          // console.log('email-----',apiResponse.first_name);
+          // console.log('email-----',apiResponse.email);
+          // console.log('id-----',response.authResponse.accessToken);
+          window.localStorage.setItem('tokenFacebook', response.authResponse.accessToken);
+          window.localStorage.setItem('id', apiResponse.id);
+          window.localStorage.setItem('name', apiResponse.first_name);
+          window.localStorage.setItem('login_method', 'facebook');
+          let url = 'http://localhost:3000/api/signinfb';
+          let body = {
+            id: apiResponse.id,
+            email: apiResponse.email,
+            first_name:apiResponse.first_name,
+            token: response.authResponse.accessToken
+          }
+          axios.post(url, body)
+            .then((res) => {
+              console.log(res.data);
+              localStorage.setItem('token', res.data) //result.data adalah TOKEN
+              window.location.href = 'main.html'
+            })
+            .catch((err) => {
+              console.log('no berhasil');
+              console.log(err);
+            });
+        });
+      } else {
+        // The person is not logged into your app or we are unable to tell.
+        document.getElementById('status').innerHTML = 'Please log ' +
+          'into this app.';
+      }
+    }
+
+    // function facebookLogOut() {
+    //   if(localStorage.getItem('login_method') === 'facebook') {
+    //     if(confirm('Log out from Facebook as well?')) {
+    //       FB.logout(function(response) {
+    //         console.log(response);
+    //       });
+    //     }
+    //   }
+    // }
+  </script>
+
+
 </html>

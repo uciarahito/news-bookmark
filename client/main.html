@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+      <script src="https://unpkg.com/vue"></script>
+  </head>
+  <body>
+    <div id="app">
+      MASUK
+        <button type="button" class="btn btn-danger" v-on:click="logOut">Log Out</button>
+    </div>
+  </body>
+
+  <script>
+  var app = new Vue({
+      el : '#app',
+      created:function(){
+        if(localStorage.getItem('token') == null){
+          window.location.href = 'index.html'
+        }
+        else{
+          console.log(localStorage.getItem('token'));
+        }
+      },
+      methods:{
+        logOut:function(){
+          window.localStorage.removeItem('token')
+          window.location.href = 'index.html'
+        }
+      }
+
+
+  })
+
+  </script>
+</html>

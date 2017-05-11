@@ -4,8 +4,10 @@ let Schema = mongoose.Schema
 let userSchema = new Schema({
     uuid: String,
     username: {
-        type: String,
-        required: true
+        type: String
+    },
+    name:{
+        type: String
     },
     password: String,
     role: {

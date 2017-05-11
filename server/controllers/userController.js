@@ -127,36 +127,36 @@ methods.signin = (username, password, next) => {
 
 //INSERT FB
 methods.fbLogin = function(req, res){
-  console.log(req.body);
-
   //PERTAMA LOGIN FB SUKSES, ID LANGSUNG DIBUAT
   User.findOne({uuid:req.body.id},function(err, result) {
-    // if(result == null){
-    //   // console.log(result);
-    //   var userInput = new User({
-    //     uuid:req.body.id,
-    //     email:req.body.email
-    //   })
-    //   userInput.save(function(err,userInput){
-    //     if(err){
-    //       return console.log(err);
-    //     } else {
-    //       res.send(userInput)
-    //     }
-    //   })
-    // }
-    //
-    // //KALAU SUDAH PERNAH LOGIN FB
-    // else {
-    //   var getUser = result
-    //   getUser.exec(function(err, user){
-    //       let fb = {
-    //         member_id:user.member_id
-    //       }
-    //       let token = jwt.sign(fb, 'secret')
-    //        res.send(token)
-    //   })
-    // }
+    if(result == null){
+      var userInput = new User({
+        uuid:req.body.id,
+        email:req.body.email,
+        name:req.body.first_name
+      })
+      userInput.save(function(err,record){
+        if(err){
+          return console.log(err);
+        } else {
+          console.log('pertama login -------');
+          console.log(record);
+          let token = jwt.sign(record, 'secret', {
+              expiresIn: '1d'
+          })
+          res.send(token)
+        }
+      })
+    }
+
+    else {
+      let token = jwt.sign(result, 'secret', {
+          expiresIn: '1d'
+      })
+      res.send(token)
+    }
+
+
   })
 }
 

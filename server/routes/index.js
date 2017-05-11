@@ -12,7 +12,10 @@ router.get('/api/user/:id', userController.getById)
 router.put('/api/user/:id', userController.updateById)
 router.delete('/api/user/:id', userController.deleteById)
 
+
+//FB LOGIN
 router.post('/api/signinfb', userController.fbLogin)
+
 router.post('/api/signup', userController.signup)
 router.post('/api/signin', passport.authenticate('local', {
     session: false
