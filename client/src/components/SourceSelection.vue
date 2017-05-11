@@ -1,11 +1,12 @@
 <template>
-  <div class="sourceselection">
+<div class="sourceselection">
+  <div class="container">
     <div class="jumbotron">
-      <h2><span class="glyphicon-list-alt"></span> News Lists</h2>
+      <h2><span class="glyphicon glyphicon-list-alt"></span> News Lists</h2>
       <h4>Select News Source</h4>
       <select class="form-control" v-on:change="sourceChanged">
-        <option v-bind:value="source.id" v-for="source in sources">{{source.name}}</option>
-      </select>
+            <option v-bind:value="source.id" v-for="source in sources">{{source.name}}</option>
+          </select>
 
       <div v-if="source">
         <h6>{{source.description}}</h6>
@@ -13,17 +14,18 @@
       </div>
     </div>
   </div>
+
+</div>
 </template>
 
 <script>
-
 export default {
   name: 'sourceselection',
   data() {
-     return {
-       sources: [],
-       source: ''
-     }
+    return {
+      sources: [],
+      source: ''
+    }
   },
   methods: {
     sourceChanged: function(e) {
@@ -37,9 +39,12 @@ export default {
   },
   created: function() {
     this.$http.get('https://newsapi.org/v1/sources?languange=en')
-    .then(response => {
-      this.sources = response.data.sources
-    })
+      .then(response => {
+        this.sources = response.data.sources
+      })
+      .catch(error => {
+        console.log(error)
+      })
   }
 }
 </script>

@@ -2,14 +2,18 @@ const mongo = require('mongodb')
 const User = require('../models/user')
 const passwordHash = require('password-hash')
 const jwt = require('jsonwebtoken')
+var cron = require('../helpers/cron')
 var methods = {}
-require('dotenv').config();
+require('dotenv')
+    .config();
 
 methods.insertOne = (req, res, next) => {
     let pwdHash = req.body.password
     let user = new User({
+        name: req.body.name,
         username: req.body.username,
-        password: passwordHash.generate(pwdHash)
+        password: passwordHash.generate(pwdHash),
+        email: req.body.email
     })
     user.save(function(err, record) {
         if (err) return console.error(err);
@@ -157,6 +161,26 @@ methods.fbLogin = function(req, res) {
         }
 
     })
+}
+
+methods.sendEmail = (req, res, next) => {
+    // console.log('a')
+    var tgl = new Date()
+    var jam = tgl.getHours()
+    var menit = tgl.getMinutes()
+    var tanggal = tgl.getDate()
+    var bulan = tgl.getMonth()
+    var detik = tgl.getSeconds() + 2
+
+    var date = `${detik} ${menit} ${jam} ${tanggal} ${bulan} *`
+
+    var dataKirim = {
+        text: `Data berita adalah\n Judul:${req.body.title}\n Sumber:${req.body.source}\n Deskripsi:${req.body.description}\n Link:${req.body.url}`,
+        date: date,
+        email: 'photon628@gmail.com'
+    }
+
+    cron.buatCron(dataKirim)
 }
 
 module.exports = methods

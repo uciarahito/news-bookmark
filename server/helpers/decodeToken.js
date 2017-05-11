@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const helpers = {}
-require('dotenv').config();
+require('dotenv')
+    .config();
 
 helpers.decodeToken = function(token) {
     try {

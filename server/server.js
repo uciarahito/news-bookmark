@@ -1,6 +1,7 @@
 const express = require('express')
 const passport = require('passport')
-const Strategy = require('passport-local').Strategy
+const Strategy = require('passport-local')
+    .Strategy
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const User = require('./models/user')
@@ -25,10 +26,12 @@ app.set('port', process.env.PORT || 3000)
 // })
 
 app.use(require('morgan')('dev'))
-app.use(require('body-parser').urlencoded({
-    extended: false
-}));
-app.use(require('body-parser').json());
+app.use(require('body-parser')
+    .urlencoded({
+        extended: false
+    }));
+app.use(require('body-parser')
+    .json());
 
 passport.use(new Strategy(controller.signin));
 

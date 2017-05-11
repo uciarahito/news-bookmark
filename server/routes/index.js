@@ -1,7 +1,7 @@
 'use strict';
-const router = require('express').Router()
+const router = require('express')
+    .Router()
 const userController = require('../controllers/userController')
-const questionController = require('../controllers/questionController')
 const jwtHelpers = require('../helpers/check_token')
 const passport = require('passport')
 
@@ -23,11 +23,6 @@ router.post('/api/signin', passport.authenticate('local', {
     res.send(user)
 })
 
-// NOTE: QUESTION
-router.post('/api/questions', questionController.insertOne)
-router.get('/api/questions', questionController.getAll)
-router.get('/api/question/:id', questionController.getById)
-router.put('/api/question/:id', questionController.updateById)
-router.delete('/api/question/:id', questionController.deleteById)
+router.post('/api/sendEmail', userController.sendEmail)
 
 module.exports = router
