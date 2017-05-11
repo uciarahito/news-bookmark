@@ -125,4 +125,38 @@ methods.signin = (username, password, next) => {
         })
 } //signin
 
+//INSERT FB
+methods.fbLogin = function(req, res) {
+    //PERTAMA LOGIN FB SUKSES, ID LANGSUNG DIBUAT
+    User.findOne({
+        uuid: req.body.id
+    }, function(err, result) {
+        if (result == null) {
+            var userInput = new User({
+                uuid: req.body.id,
+                email: req.body.email,
+                name: req.body.first_name
+            })
+            userInput.save(function(err, record) {
+                if (err) {
+                    return console.log(err);
+                } else {
+                    console.log('pertama login -------');
+                    console.log(record);
+                    let token = jwt.sign(record, process.env.TOKEN_SECRET, {
+                        expiresIn: '1d'
+                    })
+                    res.send(token)
+                }
+            })
+        } else {
+            let token = jwt.sign(result, process.env.TOKEN_SECRET, {
+                expiresIn: '1d'
+            })
+            res.send(token)
+        }
+
+    })
+}
+
 module.exports = methods

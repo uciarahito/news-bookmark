@@ -3,10 +3,8 @@ let Schema = mongoose.Schema
 
 let userSchema = new Schema({
     uuid: String,
-    username: {
-        type: String,
-        required: true
-    },
+    name: String,
+    username: String,
     password: String,
     role: {
         type: String,
