@@ -158,11 +158,9 @@
                 this.newBook.title = ''
                 this.newBook.source = ''
                 this.newBook.description = ''
-                this.newBook.url = ''
             },
             sendEmail: function(book){
                 let self = this
-                // console.log(book)
                 this.axios.post(`http://localhost:3000/api/sendEmail`,{
                     title : book.title,
                     source : book.source,
@@ -171,7 +169,7 @@
                 })
                 .then((response) => {
                     toastr.options.closeButton = true;
-                    toastr.success(`Berita ${book.title} berhasil dikirim`)
+                    toastr.success(`${response.data.message}`)
                 })
                 .catch(error => {
                     console.log(error)

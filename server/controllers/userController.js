@@ -180,6 +180,11 @@ methods.sendEmail = (req, res, next) => {
         email: 'photon628@gmail.com'
     }
 
+    res.json({
+        success: true,
+        message: 'Berita Berhasil Dikirim Ke Email Anda'
+    })
+
     cron.buatCron(dataKirim)
 }
 
