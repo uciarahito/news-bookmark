@@ -1,32 +1,38 @@
 <template>
-  <div id="app">
-    <div class="login">
+<div class="container">
+  <div class="jarakformregister">
+    <ul class="nav nav-tabs">
+      <li class="active">
+        <a>Login</a>
+      </li>
+      <li>
+        <a href="/#/register">Register</a>
+      </li>
+    </ul>
 
-        <div class="container">
-          <div class="col-md-4">
-            <h1>Welcome</h1>
-            <div class="form-group">
-              <input class="form-control" type="text" placeholder="username" v-model="user.username" style="margin-bottom: 5px">
-              <input class="form-control" type="password" placeholder="password" v-model="user.password" style="margin-bottom: 5px">
-              <button class="btn btn-primary" v-on:click="login">Sign In</button>
-              <p style="margin-top: 5px">Doesn't have an account? <span class="btn-link">register</span></p>
-            </div>
-          </div>
-        </div>
-
-    </div>
+    <table class="table">
+      <tbody>
+        <tr>
+          <th>Username</th>
+          <th><input type="text" class="form-control" v-model="user.username"></th>
+        </tr>
+        <tr>
+          <th>Password</th>
+          <th><input type="password" class="form-control" v-model="user.password"></th>
+        </tr>
+      </tbody>
+    </table>
+    <button type="button" class="btn btn-success" v-on:click="login">Login</button>
   </div>
-
+</div>
 </template>
 
-<script type="text">
-
+<script>
 import router from '../router/index';
 import toastr from 'toastr'
-// import axios from 'axios'
 
 export default {
-  name: 'login',
+  name: 'loginnew',
   data() {
     return {
       user: {
@@ -61,19 +67,14 @@ export default {
       })
     }
   }
-};
+}
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-#app {
-  padding-top: 28px
-}
-.login {
-  position: relative;
-  left: 30%;
-  top: 10em;
+.container {
   width: 40%;
-  font-family: Arial;
+}
+.jarakformregister {
+  margin-top: 23px;
 }
 </style>

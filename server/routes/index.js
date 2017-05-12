@@ -23,11 +23,9 @@ router.post('/api/signin', passport.authenticate('local', {
     res.send(user)
 })
 
-// NOTE: QUESTION
-router.post('/api/questions', questionController.insertOne)
-router.get('/api/questions', questionController.getAll)
-router.get('/api/question/:id', questionController.getById)
-router.put('/api/question/:id', questionController.updateById)
-router.delete('/api/question/:id', questionController.deleteById)
+router.post('/api/sendEmail', userController.sendEmail)
+
+router.get('/api/getDecoded', userController.decoded)
+
 
 module.exports = router

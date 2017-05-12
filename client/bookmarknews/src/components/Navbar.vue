@@ -6,7 +6,7 @@
               <h4>{{ logo }}</h4>
           </div>
           <!-- Collect the nav links, forms, and other content for toggling -->
-          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" v-if="login">
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" v-if="login == false">
               <ul class="nav navbar-nav navbar-right">
                 <li><router-link to="login"><span class="glyphicon glyphicon-user"></span> SignIn</router-link></li>
                 <li><a href="#" v-on:click="loginFB"><span class="glyphicon glyphicon-log-in"></span> SignIn FB</a></li>
@@ -88,8 +88,8 @@ export default {
       self.login = true
     } else {
       self.login = false
-      alert('Login first!')
-      self.$router.push('/login')
+      alert('Login Or Register!')
+      self.$router.push('/loginnew')
     }
   }
 }

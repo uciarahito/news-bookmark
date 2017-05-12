@@ -9,6 +9,8 @@ const jwt = require('jsonwebtoken')
 const app = express()
 const cors = require('cors')
 
+var index = require('./routes/index');
+
 app.use(cors())
 
 mongoose.connect('mongodb://localhost/whowon');
@@ -34,7 +36,7 @@ passport.use(new Strategy(controller.signin));
 
 app.use(passport.initialize());
 
-app.use('/', require('./routes'))
+app.use('/', index);
 
 // NOTE: run
 app.listen(app.get('port'), () => {
