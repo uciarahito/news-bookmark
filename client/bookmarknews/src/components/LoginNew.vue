@@ -35,6 +35,7 @@ import toastr from 'toastr'
 export default {
   name: 'loginnew',
   login: true,
+  props: ['nilailogin'],
   data() {
     return {
       user: {
@@ -50,6 +51,9 @@ export default {
     }
   },
   methods: {
+    cekLogin(){
+      this.$emit('cekLogin')
+    },
     onLogin() {
       let self = this
       // console.log("user: " + self.user);
@@ -66,7 +70,7 @@ export default {
           self.message = response.data.message
           localStorage.setItem('token', response.data.token)
           toastr.success('Login Berhasil')
-          self.login = true
+          self.cekLogin()
           // self.$router.push('/')
           window.location.href = "/"
         }
@@ -92,7 +96,7 @@ export default {
               self.signup.username = 'ucilubis'
               self.signup.password = response.name
               self.signup.email = `${response.name}@facebook.com`
-              self.login = true
+              self.cekLogin()
             } else {
               console.log('belum login')
             }
@@ -111,9 +115,8 @@ export default {
   created() {
     let self = this
     if (localStorage.getItem('token') != null) {
-      self.login = true
+      self.$router.push('/')
     } else {
-      self.login = false
       self.$router.push('/loginnew')
     }
   }

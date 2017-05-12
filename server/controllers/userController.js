@@ -170,7 +170,7 @@ methods.decoded = (req, res, next) => {
 }
 
 methods.sendEmail = (req, res, next) => {
-    let decoded = Helpers.decodeToken(req.body.token)
+    // let decoded = Helpers.decodeToken(req.body.token)
 
     var tgl = new Date()
     var jam = tgl.getHours()
@@ -184,7 +184,7 @@ methods.sendEmail = (req, res, next) => {
     var dataKirim = {
         text: `Data berita adalah\n Judul:${req.body.title}\n Sumber:${req.body.source}\n Deskripsi:${req.body.description}\n Link:${req.body.url}`,
         date: date,
-        email: decoded.email
+        email: 'photon628@gmail.com'
     }
 
     res.json({

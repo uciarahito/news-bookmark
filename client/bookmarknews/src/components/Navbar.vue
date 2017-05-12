@@ -6,14 +6,16 @@
               <h4>{{ logo }}</h4>
           </div>
           <!-- Collect the nav links, forms, and other content for toggling -->
-          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" v-if="login">
+
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" v-if="nilailogin">
             <ul class="nav navbar-nav navbar-right">
-              <li><a href="#" v-on:click="onLogout"><span class="glyphicon glyphicon-log-in"></span> {{txtLogOut}}</a></li>
+              <li><a href="#" @click="onSignOut"><span class="glyphicon glyphicon-log-in"></span> SignOut</a></li>
             </ul>
           </div>
+
           <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" v-else>
             <ul class="nav navbar-nav navbar-right">
-              <li><router-link to="loginnew"><span class="glyphicon glyphicon-log-out"></span> {{txtLogIn}}</router-link></li>
+              <li><router-link to="loginnew"><span class="glyphicon glyphicon-log-out"></span> SignIn</router-link></li>
             </ul>
           </div>
           <!-- /.navbar-collapse -->
@@ -25,35 +27,29 @@
 
 <script>
 export default {
+  props: ['nilailogin'],
   name: 'navbar',
   data() {
     return {
       logo: 'BookmarkNews',
-      login: true,
-      txtLogIn: '',
-      txtLogOut: ''
+      login: true
     }
   },
   methods: {
-    onLogout() {
-      localStorage.removeItem('token');
-      this.login = false
-      // self.$router.push('/loginnew')
-      window.location.href = "/#/loginregister"
+    onSignOut() {
+      // alert('child')
+      this.$emit('onSignOut')
     }
   },
   created() {
-    let self = this
-    if (localStorage.getItem('token') != null) {
-      self.txtLogOut = 'SignOut'
-      self.txtLogIn = ''
-      self.login = true
-    } else {
-      self.txtLogOut = ''
-      self.txtLogIn = 'SignIn'
-      self.login = false
-      self.$router.push('/loginnew')
-    }
+    // let self = this
+    // if (localStorage.getItem('token') != null) {
+    //   self.login = true
+    //   self.$router.push('/')
+    // } else {
+    //   self.login = false
+    //   self.$router.push('/loginnew')
+    // }
   }
 }
 </script>

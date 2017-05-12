@@ -62,6 +62,8 @@
       </div>
     </div>
   </div>
+
+
   <div class="container">
     <ul class="media-list">
       <li class="media" v-for="article in articles">
@@ -111,6 +113,7 @@ export default {
   data() {
     return {
       articles: [],
+      isLogin: false,
       newBook: {
         title: '',
         source: '',
@@ -120,67 +123,67 @@ export default {
     }
   },
   methods: {
+    cekLogin(){
+      this.$emit('cekLogin')
+    },
     updateSource: function(source) {
       this.$http.get(`https://newsapi.org/v1/articles?source=${source}&apiKey=8b8441d3403c4f73896ea3b0e039595b`)
         .then(response => {
           this.articles = response.data.articles
         })
+        .catch(error => {
+          console.log(error)
+          // if (localStorage.getItem('token') != null) {
+          //   alert('Login or Register first')
+          // } else {
+          //   console.log(error)
+          // }
+        })
     },
     bookmarknews(article, source) {
-      var data = {
-        title: article.title,
-        source: source,
-        description: article.description,
-        url: article.url
-      }
-      this.axios.get('http://localhost:3000/api/getDecoded',
-        { headers: { token: localStorage.getItem('token') }})
-        .then(response => {
-          // console.log('+++++++');
-          // console.log(response);
-          // booksRef.push(this.newBook)
-          Firebase.database().ref('books/' + response.data._id + '/' + this.newBook.title).set(data)
-          toastr.options.closeButton = true;
-          toastr.success(`Berita ${this.newBook.title} berhasil ditambah`)
-          data = {}
-        })
-        .catch(error => {
-          console.log(error)
-          alert('Login or Register first')
-        })
-      //   console.log(source)
-
-      // Firebase.database().ref('books/' + response.data._id).set({data})
-      // console.log('-----------');
-      // console.log(booksRef);
-      // toastr.options.closeButton = true;
-      // toastr.success(`Berita '${data.title}' berhasil ditambah`)
-      // data = {}
+        //   console.log(source)
+        var data = {
+            title: article.title,
+            source: source,
+            description: article.description,
+            url: article.url
+        }
+        booksRef.push(data)
+        toastr.options.closeButton = true;
+        toastr.success(`Berita '${data.title}' berhasil ditambah`)
+        data = {}
     },
     addBook: function() {
-      this.axios.get('http://localhost:3000/api/getDecoded',
-        { headers: { token: localStorage.getItem('token') }})
-        .then(response => {
+      booksRef.push(this.newBook)
+      toastr.options.closeButton = true;
+      toastr.success(`Berita ${this.newBook.title} berhasil ditambah`)
+      this.newBook.title = ''
+      this.newBook.source = ''
+      this.newBook.description = ''
+      this.newBook.url = ''
+
+      // this.axios.get('http://localhost:3000/api/getDecoded',
+      //   { headers: { token: localStorage.getItem('token') }})
+      //   .then(response => {
           // console.log('+++++++');
           // console.log(response);
-          // booksRef.push(this.newBook)
-          Firebase.database().ref('books/' + response.data._id + '/' + this.newBook.title).set({
-            title: this.newBook.title,
-            source: this.newBook.source,
-            description: this.newBook.description,
-            url: this.newBook.url
-          })
-          toastr.options.closeButton = true;
-          toastr.success(`Berita ${this.newBook.title} berhasil ditambah`)
-          this.newBook.title = ''
-          this.newBook.source = ''
-          this.newBook.description = ''
-          this.newBook.url = ''
-        })
-        .catch(error => {
-          console.log(error)
-          alert('Login or Register first')
-        })
+
+          // Firebase.database().ref('books/' + response.data._id + '/' + this.newBook.title).set({
+          //   title: this.newBook.title,
+          //   source: this.newBook.source,
+          //   description: this.newBook.description,
+          //   url: this.newBook.url
+          // })
+
+
+        // })
+        // .catch(error => {
+        //   if (localStorage.getItem('token') != null) {
+        //     alert('Login or Register first')
+        //   } else {
+        //     console.log(error)
+        //   }
+        // })
     },
     sendEmail: function(book) {
       let self = this
@@ -197,7 +200,12 @@ export default {
         toastr.success(`${response.data.message}`)
       })
       .catch(error => {
-        console.log(error)
+        
+        if (localStorage.getItem('token') != null) {
+          alert('Login or Register first')
+        } else {
+          console.log(error)
+        }
       })
     },
     removeBook: function(book) {
@@ -209,6 +217,10 @@ export default {
     }
   },
   created: function() {
+    if (localStorage.getItem('token') === null) {
+      alert('Login or Register')
+      window.location.href = "/#/loginnew"
+    }
     this.updateSource(this.source)
   },
   watch: {

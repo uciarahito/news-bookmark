@@ -46,8 +46,8 @@ export default {
     })
     .catch(error => {
         console.log(error)
-        alert('Login Or Register')
-        self.$router.push('/loginnew')
+        // alert('Login Or Register')
+        // self.$router.push('/loginnew')
     })
   }
 }
