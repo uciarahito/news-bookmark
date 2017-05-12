@@ -62,7 +62,8 @@ export default {
           self.name = ''
           self.email = ''
           alert('Register Success')
-          window.location.href = "/#/loginnew";
+          // window.location.href = "/#/loginnew";
+          self.$router.push('/loginnew')
         })
     }
   }

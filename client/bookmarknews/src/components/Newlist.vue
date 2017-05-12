@@ -30,9 +30,7 @@
 
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3>
-                      Bookmark News List
-                  </h3>
+        <h3>Bookmark News List</h3>
       </div>
       <div class="panel-body">
         <table class="table table-striped">
@@ -52,11 +50,11 @@
               <td>{{book.description}}</td>
               <td>
                 <button type="button" class="btn btn-danger" data-toggle="tooltip" data-placement="right" title="Hapus Bookmark" v-on:click="removeBook(book)">
-                                      <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                                  </button>
+                  <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                </button>
                 <button type="button" class="btn btn-info" data-toggle="tooltip" data-placement="right" title="Kirim Ke Email" v-on:click="sendEmail(book)">
-                                      <span class="glyphicon glyphicon-send" aria-hidden="true"></span>
-                                  </button>
+                  <span class="glyphicon glyphicon-send" aria-hidden="true"></span>
+                </button>
               </td>
             </tr>
           </tbody>
@@ -141,13 +139,14 @@ export default {
           // console.log('+++++++');
           // console.log(response);
           // booksRef.push(this.newBook)
-          Firebase.database().ref('books/' + response.data._id + '/' + this.newBook.title).set({data})
+          Firebase.database().ref('books/' + response.data._id + '/' + this.newBook.title).set(data)
           toastr.options.closeButton = true;
           toastr.success(`Berita ${this.newBook.title} berhasil ditambah`)
           data = {}
         })
         .catch(error => {
           console.log(error)
+          alert('Login or Register first')
         })
       //   console.log(source)
 
@@ -178,25 +177,28 @@ export default {
           this.newBook.description = ''
           this.newBook.url = ''
         })
-
+        .catch(error => {
+          console.log(error)
+          alert('Login or Register first')
+        })
     },
     sendEmail: function(book) {
       let self = this
       // alert(book.title)
       this.axios.post(`http://localhost:3000/api/sendEmail`,{
-                    title : book.title,
-                    source : book.source,
-                    description : book.description,
-                    url : book.url,
-                    token: localStorage.getItem('token')
-                })
-        .then((response) => {
-          toastr.options.closeButton = true;
-          toastr.success(`${response.data.message}`)
-        })
-        .catch(error => {
-          console.log(error)
-        })
+          title : book.title,
+          source : book.source,
+          description : book.description,
+          url : book.url,
+          token: localStorage.getItem('token')
+      })
+      .then((response) => {
+        toastr.options.closeButton = true;
+        toastr.success(`${response.data.message}`)
+      })
+      .catch(error => {
+        console.log(error)
+      })
     },
     removeBook: function(book) {
       if (confirm('Apa anda ingin menghapus link berita ini?')) {

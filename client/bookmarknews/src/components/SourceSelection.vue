@@ -45,9 +45,9 @@ export default {
       this.sources = response.data.sources
     })
     .catch(error => {
-        alert('Login first')
         console.log(error)
-        self.$router.push('/login')
+        alert('Login Or Register')
+        self.$router.push('/loginnew')
     })
   }
 }

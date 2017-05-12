@@ -22,7 +22,8 @@
         </tr>
       </tbody>
     </table>
-    <button type="button" class="btn btn-success" v-on:click="login">Login</button>
+    <button type="button" class="btn btn-success" v-on:click="onLogin">Login</button>
+    <button type="button" class="btn btn-primary" v-on:click="loginFB">Login FB</button>
   </div>
 </div>
 </template>
@@ -33,16 +34,23 @@ import toastr from 'toastr'
 
 export default {
   name: 'loginnew',
+  login: true,
   data() {
     return {
       user: {
         username: '',
         password: ''
+      },
+      signup: {
+        name: '',
+        username: '',
+        password: '',
+        email: ''
       }
     }
   },
   methods: {
-    login() {
+    onLogin() {
       let self = this
       // console.log("user: " + self.user);
       self.$http.post('http://localhost:3000/api/signin', {
@@ -57,14 +65,56 @@ export default {
         } else {
           self.message = response.data.message
           localStorage.setItem('token', response.data.token)
-          toastr.success('Login Sukses')
-          self.$router.push('/')
+          toastr.success('Login Berhasil')
+          self.login = true
+          // self.$router.push('/')
+          window.location.href = "/"
         }
       })
       .catch(err => {
         alert('error login')
         console.log(err);
       })
+    },
+    loginFB: function() {
+      let self = this
+      FB.login(function(response) {
+        if (response.status === 'connected') {
+          FB.api('/me', 'GET',
+					{
+            fields: 'first_name,last_name,name,id'
+          },
+					 function(response) {
+            if (response) {
+							self.user.username = response.first_name + "_" + response.last_name
+							self.user.password = response.name
+              self.signup.name = response.name
+              self.signup.username = 'ucilubis'
+              self.signup.password = response.name
+              self.signup.email = `${response.name}@facebook.com`
+              self.login = true
+            } else {
+              console.log('belum login')
+            }
+						console.log('FB ',response)
+          });
+        } else if (response.status === 'not_authorized') {
+          console.log('We are not logged in.')
+        } else {
+          console.log('You are not logged into Facebook.');
+        }
+      }, {
+        scope: 'email'
+      });
+    }
+  },
+  created() {
+    let self = this
+    if (localStorage.getItem('token') != null) {
+      self.login = true
+    } else {
+      self.login = false
+      self.$router.push('/loginnew')
     }
   }
 }
