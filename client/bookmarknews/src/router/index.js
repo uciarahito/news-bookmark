@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Hello from '@/components/Hello'
+import Login from '@/components/Login'
 import SourceSelection from '@/components/SourceSelection'
 import Newlist from '@/components/Newlist'
 
@@ -13,14 +14,9 @@ export default new Router({
       component: Hello
     },
     {
-      path: '/sourceselection',
-      name: 'SourceSelection',
-      component: SourceSelection
-    },
-    {
-      path: '/newlist',
-      name: 'Newlist',
-      component: Newlist
+      path: '/login',
+      name: 'Login',
+      component: Login
     }
   ]
 })

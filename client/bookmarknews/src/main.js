@@ -2,9 +2,12 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
+import Navbar from './components/Navbar'
 import router from './router'
 
 import VueResource from 'vue-resource'
+
+Vue.component('navbar', Navbar)
 
 Vue.config.productionTip = false
 

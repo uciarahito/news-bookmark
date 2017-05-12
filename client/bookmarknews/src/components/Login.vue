@@ -1,24 +1,26 @@
 <template>
+  <div id="app">
     <div class="login">
-      <h2>Login</h2>
-      <form class="login-form">
-        <div class="form-group">
-          <label class="label-info">Username</label>
-          <input class="input-info" type="text" v-model="user.userName" />
+
+        <div class="container">
+          <div class="col-md-4">
+            <h1>Welcome</h1>
+            <div class="form-group">
+              <input class="form-control" type="text" placeholder="username" v-model="user.username" style="margin-bottom: 5px">
+              <input class="form-control" type="password" placeholder="password" v-model="user.password" style="margin-bottom: 5px">
+              <button class="btn btn-primary" v-on:click="login">Sign In</button>
+              <!-- <button v-on:click="login" class="btn btn-primary">Sign in</button> -->
+              <!-- <p style="margin-top: 5px">Doesn't have an account? <span v-on:click="openRegForm" class="btn-link">register</span></p> -->
+            </div>
+          </div>
         </div>
-        <div class="form-group">
-          <label class="label-info">Password</label>
-          <input class="input-info" type="password" v-model="user.password" />
-        </div>
-        <div class="form-control">
-          <button class="button" type="reset">Reset</button>
-          <button class="button" type="submit" v-on:click="login">Login</button>
-        </div>
-      </form>
+
     </div>
+  </div>
+
 </template>
 
-<script type="text/ecmascript-6">
+<script type="text">
 
 import router from '../router/index';
 import toastr from 'toastr'
@@ -26,75 +28,53 @@ import toastr from 'toastr'
 
 export default {
   name: 'login',
-  data () {
+  data() {
     return {
       user: {
-        userName: '',
+        username: '',
         password: ''
       }
     }
   },
   methods: {
-    // login() {
-    //   let self = this
-    //   console.log("user: " + self.user);
-    //   Vue.axios.post('http://localhost:3000/api/signin', {
-    //     username: self.user.userName,
-    //     password: self.user.password
-    //   })
-    //   .then((response) => {
-    //     // console.log("login: " + response);
-    //     if (response.data.success == true) {
-    //       console.log(response.data);
-    //       localStorage.setItem('token', response.data.token)
-    //       // toastr.success('Login Sukses')
-    //       self.$router.push('/')
-    //     } else {
-    //       console.log('Login Gagal');
-    //       // toastr.success('Login Gagal');
-    //     }
-    //   })
-    //   .catch(err => {
-    //     alert('error login')
-    //     console.log(err);
-    //   })
-    // }
+    login() {
+      let self = this
+      // console.log("user: " + self.user);
+      self.$http.post('http://localhost:3000/api/signin', {
+        username: self.user.username,
+        password: self.user.password
+      })
+      .then((response) => {
+        console.log(response.data);
+        if (response.data.hasOwnProperty('err')) {
+          self.message = response.data.err.errmsg
+          toastr.success('Login Gagal');
+        } else {
+          self.message = response.data.message
+          localStorage.setItem('token', response.data.token)
+          toastr.success('Login Sukses')
+          self.$router.push('/')
+        }
+      })
+      .catch(err => {
+        alert('error login')
+        console.log(err);
+      })
+    }
   }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="stylus" rel="stylesheet/stylus">
-.login
+<style scoped>
+#app {
+  padding-top: 28px
+}
+.login {
   position: relative;
   left: 30%;
   top: 10em;
   width: 40%;
   font-family: Arial;
-  .login-form
-    margin: 0 auto;
-    width: 80%;
-    font-size: 18px;
-    .form-group
-      padding-top: 10px;
-      height: 60px;
-      .label-info
-        width: 40%;
-        height: 60px;
-        line-height: 60px;
-        text-align: right;
-        font-weight: bold;
-      .input-info
-        width: 60%;
-        height: 35px;
-        border-radius: 4px;
-        font-size: 18px;
-        outline: none;
-    .form-control
-      text-align: right;
-      margin-right: 62px;
-      .button
-        width: 100px;
-        height: 30px;
-        border-radius: 5px;
+}
 </style>

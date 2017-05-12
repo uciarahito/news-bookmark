@@ -36,9 +36,18 @@ export default {
     }
   },
   created: function() {
-    this.$http.get('https://newsapi.org/v1/sources?languange=en')
+    this.$http.get('https://newsapi.org/v1/sources?languange=en', {
+      headers: {
+        token: localStorage.getItem('token')
+      }
+    })
     .then(response => {
       this.sources = response.data.sources
+    })
+    .catch(error => {
+        alert('Login first')
+        console.log(error)
+        self.$router.push('/login')
     })
   }
 }
