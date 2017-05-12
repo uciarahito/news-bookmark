@@ -1,29 +1,30 @@
 <template>
-  <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-      <div class="container">
-          <!-- Brand and toggle get grouped for better mobile display -->
-          <div class="navbar-header">
-              <h4>{{ logo }}</h4>
-          </div>
-          <!-- Collect the nav links, forms, and other content for toggling -->
-          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" v-if="login">
-              <ul class="nav navbar-nav navbar-right">
-                <li><router-link to="login"><span class="glyphicon glyphicon-user"></span> SignIn</router-link></li>
-                <li><a href="#" v-on:click="loginFB"><span class="glyphicon glyphicon-log-in"></span> SignIn FB</a></li>
-              </ul>
-          </div>
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  <div class="container">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <h4>{{ logo }}</h4>
+    </div>
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" v-if="login">
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+          <router-link to="login"><span class="glyphicon glyphicon-user"></span> SignIn</router-link>
+        </li>
+        <li><a href="#" v-on:click="loginFB"><span class="glyphicon glyphicon-log-in"></span> SignIn FB</a></li>
+      </ul>
+    </div>
 
-          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" v-else>
-              <ul class="nav navbar-nav navbar-right">
-                <li><span class="glyphicon glyphicon-user"></span> Welcome</li>
-                <li><a href="#" v-on:click="onLogout"><span class="glyphicon glyphicon-log-in"></span> SignOut</a></li>
-              </ul>
-          </div>
-          <!-- /.navbar-collapse -->
-      </div>
-      <!-- /.container -->
-  </nav>
-
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" v-else>
+      <ul class="nav navbar-nav navbar-right">
+        <li><span class="glyphicon glyphicon-user"></span> Welcome</li>
+        <li><a href="#" v-on:click="onLogout"><span class="glyphicon glyphicon-log-in"></span> SignOut</a></li>
+      </ul>
+    </div>
+    <!-- /.navbar-collapse -->
+  </div>
+  <!-- /.container -->
+</nav>
 </template>
 
 <script>
@@ -54,24 +55,23 @@ export default {
       let self = this
       FB.login(function(response) {
         if (response.status === 'connected') {
-          FB.api('/me', 'GET',
-					{
-            fields: 'first_name,last_name,name,id'
-          },
-					 function(response) {
-            if (response) {
-							self.signin.username = response.first_name + "_" + response.last_name
-							self.signin.password = response.name
-              self.signup.name = response.name
-              self.signup.username = 'ucilubis'
-              self.signup.password = response.name
-              self.signup.email = `${response.name}@facebook.com`
-              // self.onRegister()
-            } else {
-              console.log('belum login')
-            }
-						console.log('FB ',response)
-          });
+          FB.api('/me', 'GET', {
+              fields: 'first_name,last_name,name,id'
+            },
+            function(response) {
+              if (response) {
+                self.signin.username = response.first_name + "_" + response.last_name
+                self.signin.password = response.name
+                self.signup.name = response.name
+                self.signup.username = 'ucilubis'
+                self.signup.password = response.name
+                self.signup.email = `${response.name}@facebook.com`
+                // self.onRegister()
+              } else {
+                console.log('belum login')
+              }
+              console.log('FB ', response)
+            });
         } else if (response.status === 'not_authorized') {
           console.log('We are not logged in.')
         } else {
@@ -89,7 +89,7 @@ export default {
     } else {
       self.login = false
       alert('Login first!')
-      self.$router.push('/login')
+      // self.$router.push('/login')
     }
   }
 }
@@ -97,4 +97,5 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
 </style>
