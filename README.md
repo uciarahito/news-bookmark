@@ -1,2 +1,2 @@
-# whowon
-Sejenis quiz sederhana yang dapat dimainkan oleh banyak orang dalam waktu bersama-sama.
+# news-bookmark
+This is a simple app list all news based on News API using Vue js.
